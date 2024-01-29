@@ -61,4 +61,18 @@ public class Contato {
         }
         return result.toString();
     }
+    public boolean equals (Contato outroContato){
+        if (this == outroContato)
+            return true;
+        if(outroContato == null || getClass() != outroContato.getClass())
+            return false;
+        return id.equals(outroContato.id);
+    }
+    public boolean equalsTelefone(Contato outroContato){
+        if(this == outroContato)
+            return true;
+        if(outroContato == null || getClass() != outroContato.getClass())
+            return false;
+        return telefones.equals(outroContato.telefones);
+    }
 }

@@ -51,12 +51,45 @@ public class Agenda {
             System.out.println("Erro ao salvar dados: " +e.getMessage());
         }
     }
-    public void adicionarContato(Contato contato){
-        if (!contatos.contains(contato)){
-            contatos.add(contato);
-            salvarDados();
+    public boolean verificarIdExistente (Long id){
+        for (Contato contatoExistente : contatos){
+            if(contatoExistente.getId().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean verificarContatoExistente(Contato novoContato){
+        for(Contato contatoExistente : contatos){
+            if(contatoExistente.equals(novoContato)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean verificarTelefoneExistente(Contato novoContato){
+        for(Telefone novoTelefone : novoContato.getTelefones()){
+            for(Contato contato : contatos){
+                for(Telefone telefone : contato.getTelefones()){
+                    if(telefone.getDdd().equals(novoTelefone.getDdd())&& telefone.getNumero().equals(novoTelefone.getNumero()) && telefone.getTipo() == novoTelefone.getTipo()){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public void adicionarContato(Contato novoContato){
+        if(!verificarTelefoneExistente(novoContato)){
+            if (!verificarIdExistente(novoContato.getId()) && !verificarContatoExistente(novoContato)){
+                contatos.add(novoContato);
+                salvarDados();
+                System.out.println("Contato adicionado!");
+            }else {
+                System.out.println("ID duplicado ou telefone já cadastrado. Não foi possível adicionar.");
+            }
         }else {
-            System.out.println("Contato com ID duplicado. Não foi possível adicionar.");
+            System.out.println("Telefone já cadastrado. Nõa foi possível adicionar o contato ");
         }
     }
     public void removerContato(Long id){
